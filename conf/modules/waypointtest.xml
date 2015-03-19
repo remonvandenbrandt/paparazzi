@@ -1,0 +1,18 @@
+<!DOCTYPE module SYSTEM "module.dtd">
+
+<module name="waypointtest">
+  <doc>
+    <description>
+     Change the waypoint in code
+    </description>
+  </doc>
+  <header>
+    <file name="waypointtest.h"/>
+  </header>
+  <init fun="waypointtest_init()"/>
+  <periodic fun="waypointtest_periodic()" freq="60."/>
+  <makefile>
+    <file name="waypointtest.c"/>
+  </makefile>
+</module>
+
