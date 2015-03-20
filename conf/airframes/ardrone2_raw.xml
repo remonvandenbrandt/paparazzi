@@ -29,6 +29,7 @@
     <load name="gps_ubx_ucenter.xml"/>
     <load name="send_imu_mag_current.xml"/>
     <load name="file_logger.xml"/>
+    <load name="waypointtest.xml"/>
     <!--  load name="../../sw/ext/ardrone2_vision/modules/Mjpeg/ViewVideo.xml"/-->
   </modules>
 
@@ -137,9 +138,9 @@
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
     <!-- setpoints -->
-    <define name="SP_MAX_PHI" value="45" unit="deg"/>
-    <define name="SP_MAX_THETA" value="45" unit="deg"/>
-    <define name="SP_MAX_R" value="600" unit="deg/s"/>
+    <define name="SP_MAX_PHI" value="10" unit="deg"/>
+    <define name="SP_MAX_THETA" value="10" unit="deg"/>
+    <define name="SP_MAX_R" value="200" unit="deg/s"/>
     <define name="DEADBAND_A" value="0"/>
     <define name="DEADBAND_E" value="0"/>
     <define name="DEADBAND_R" value="250"/>
