@@ -1,8 +1,13 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
-<flight_plan alt="150" ground_alt="147" lat0="51.990634" lon0="4.376789" max_dist_from_home="10" name="Waypoint move" security_height="2">
+<flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="50" name="Waypoint move" security_height="1">
 <header>
  #include "autopilot.h"
  #include "generated/modules.h"
+
+#include "modules/waypointtest/waypointtest.h"
+
+// Incluse airframe.h To be able to use specific variables
+    #include "generated/airframe.h"
 </header>
  <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
@@ -17,7 +22,8 @@
     <waypoint lat="51.990606" lon="4.376760" name="FA2"/>
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
     <waypoint lat="51.990681" lon="4.376791" name="FA4"/>
-    <waypoint lat="51.9906220" lon="4.3767033" name="DynamicWP"/>
+    <waypoint name="DynamicWP" x="-1.0" y="-1.0"/>
+    <waypoint name="GlobalWP" x="3.0" y="3.0"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Flight_Area">
@@ -51,9 +57,32 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-    <block name="Dynamic WP">
-	<stay wp="DynamicWP"/>   
+    <!--<block name="Dynamic WP">
+	<while cond="TRUE">
+		<go wp="DynamicWP"/>
+		<call fun="moveWaypoint(WP_DynamicWP)"/>
+	</while>
+    </block>-->
+
+<block name="flyToWaypoint">
+	<exception cond="detectObstacle()" deroute="avoidObstacle"/>
+	<stay wp="GlobalWP"/>
+</block>
+<block name="avoidObstacle">
+	<call fun="generateWaypoint(WP_DynamicWP)"/>
+	<go wp="DynamicWP"/>
+	<deroute block="flyToWaypoint"/>
+</block>
+
+   <!--/block>
+	<block name="Go Wp" strip_button="Go WP">
+		<go wp="DynamicWP"/>
+	</block>
+	<block name="Change WP2" strip_button="Change WP2">
+	<call fun="moveWaypoint(WP_DynamicWP)"/>
    </block>
+	<block name="Go Wp2" strip_button="Go WP2">
+		<go wp="DynamicWP"/-->
     <block name="stay_p1">
       <stay wp="p1"/>
     </block>

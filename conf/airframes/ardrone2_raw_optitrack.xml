@@ -33,7 +33,7 @@
       <define name="FOLLOW_WAYPOINT_ID" value="WP_p1"/>
       <define name="FOLLOW_OFFSET_Z" value="2.0"/>
     </load>
-    <load name="waypointtest.xml"/>
+    <!--<load name="waypointtest.xml"/>-->
   </modules>
 
   <commands>
@@ -145,8 +145,8 @@
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
     <!-- setpoints -->
-    <define name="SP_MAX_PHI" value="10" unit="deg"/>
-    <define name="SP_MAX_THETA" value="10" unit="deg"/>
+    <define name="SP_MAX_PHI" value="3" unit="deg"/>
+    <define name="SP_MAX_THETA" value="3" unit="deg"/>
     <define name="SP_MAX_R" value="200" unit="deg/s"/>
     <define name="DEADBAND_A" value="0"/>
     <define name="DEADBAND_E" value="0"/>
@@ -197,7 +197,7 @@
 
   <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
     <!-- Good weather -->
-    <define name="MAX_BANK" value="20" unit="deg"/>
+    <define name="MAX_BANK" value="3" unit="deg"/>
     <!-- Bad weather -->
     <!-- define name="MAX_BANK" value="32" unit="deg"/ -->
 
