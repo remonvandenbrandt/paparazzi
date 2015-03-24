@@ -61,11 +61,11 @@ int moveWaypoint(uint8_t wp_id) {
 }
 
 int detectObstacle(void) {
-
+	nav_set_heading_towards_waypoint(WP_GlobalWP);
 	return 0;
 }
 
 int generateWaypoint(uint8_t wp_id) {
-	
+	nav_set_heading_towards_waypoint(wp_id);
 	return 0;
 }

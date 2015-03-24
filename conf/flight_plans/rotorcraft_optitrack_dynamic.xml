@@ -1,5 +1,5 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
-<flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="50" name="Waypoint move" security_height="1">
+<flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="7" name="Waypoint move" security_height="1">
 <header>
  #include "autopilot.h"
  #include "generated/modules.h"
@@ -23,7 +23,7 @@
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
     <waypoint lat="51.990681" lon="4.376791" name="FA4"/>
     <waypoint name="DynamicWP" x="-1.0" y="-1.0"/>
-    <waypoint name="GlobalWP" x="3.0" y="3.0"/>
+    <waypoint name="GlobalWP" x="0" y="3.5"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Flight_Area">
@@ -66,12 +66,16 @@
 
 <block name="flyToWaypoint">
 	<exception cond="detectObstacle()" deroute="avoidObstacle"/>
-	<stay wp="GlobalWP"/>
+	<go wp="GlobalWP"/>
+	<deroute block="stayStandby"/>
 </block>
 <block name="avoidObstacle">
 	<call fun="generateWaypoint(WP_DynamicWP)"/>
 	<go wp="DynamicWP"/>
 	<deroute block="flyToWaypoint"/>
+</block>
+<block name="stayStandby">
+	<stay wp="GlobalWP"/>
 </block>
 
    <!--/block>
