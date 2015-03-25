@@ -44,15 +44,17 @@ return 0;
 bool_t mock_detectObstacle(void){
    int i, n;
    time_t t;
+   t = time(&t);
    
    /* Intializes random number generator */
-   srand((unsigned) time(&t));
-   if(t % 30 == 0){
- 	i=rand() % 1; //Generates 1 or 0
+   srand((unsigned) t);
+   if(t % 10 == 0){
+ 	i=1; //Generates 1 or 0
    } else {
    	i=0;
    }
-	printf("%d",i);
+   printf("DEBUG i: %d\n",i);
+   printf("DEBUG t: %d\n",t);
    return i;
 }
 
