@@ -2,6 +2,7 @@
 #include "firmwares/rotorcraft/navigation.h"
 #include "generated/flight_plan.h"
 #include <stdio.h>
+#include <stdlib.h>
 /*double wx=51.990680;
 double wy=4.376790;
 struct LlaCoor_i waypoint;
@@ -41,8 +42,18 @@ return 0;
 
 
 bool_t mock_detectObstacle(void){
-
-return 0;
+   int i, n;
+   time_t t;
+   
+   /* Intializes random number generator */
+   srand((unsigned) time(&t));
+   if(t % 30 == 0){
+ 	i=rand() % 1; //Generates 1 or 0
+   } else {
+   	i=0;
+   }
+	printf("%d",i);
+   return i;
 }
 
 /*int detectObstacle(void) {

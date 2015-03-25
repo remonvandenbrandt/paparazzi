@@ -1,10 +1,12 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
-<flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="7" name="Waypoint move" security_height="1">
+<flight_plan alt="3" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="7" name="Waypoint move" security_height="1">
 <header>
  #include "autopilot.h"
  #include "generated/modules.h"
 
 #include "modules/waypointtest/waypointtest.h"
+//Enable advanced electrical power functions
+    #include "subsystems/electrical.h"
 
 // Incluse airframe.h To be able to use specific variables
     #include "generated/airframe.h"
@@ -27,10 +29,10 @@
   </waypoints>
   <sectors>
     <sector color="red" name="Flight_Area">
-      <corner name="FA4"/>
-      <corner name="FA3"/>
-      <corner name="FA2"/>
       <corner name="FA1"/>
+      <corner name="FA2"/>
+      <corner name="FA3"/>
+      <corner name="FA4"/>
     </sector>
   </sectors>
   <blocks>
@@ -46,6 +48,10 @@
       <call fun="NavSetWaypointHere(WP_TD)"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
     </block>
+    <block name="Holding point">
+      <call fun="NavKillThrottle()"/>
+      <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
+    </block>
     <block name="Start Engine">
       <call fun="NavResurrect()"/>
     </block>
@@ -57,56 +63,22 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-    <block name="MOVETODYN">
-	<call fun="moveWaypoint_HD(WP_MYDYNAMIC)"/>
-	<while cond="LessThan(NavBlockTime(), 3)"/>
-    </block>
     <block name="challenge">
+	<!--<exception cond="LessThan(15, NavTime())" deroute="land"/>-->
 	<exception cond="mock_detectObstacle()" deroute="Avoidnow"/>
-	<go wp="MYTARGET"/>
+	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
+	<stay wp="MYTARGET"/>
+	<!--deroute block="stayStandby"/-->
     </block>
-
 <block name="Avoidnow">
 	<call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/>
 	  <go wp="MYDYNAMIC"/>
+
 	<deroute block="challenge"/>
 </block>
-
-<!-- other -->
-
-<!--block name="flyToWaypoint">
-	<exception cond="detectObstacle()" deroute="avoidObstacle"/>
-	<go wp="GlobalWP"/>
-	<deroute block="stayStandby"/>
-</block>
-<block name="avoidObstacle">
-	<call fun="generateWaypoint(WP_DynamicWP)"/>
-	<go wp="DynamicWP"/>
-	<deroute block="flyToWaypoint"/>
-</block-->
 <block name="stayStandby">
 	<stay wp="MYTARGET"/>
 </block>
-    <block name="stay_p1">
-      <stay wp="p1"/>
-    </block>
-    <block name="go_p2">
-      <call fun="nav_set_heading_deg(90)"/>
-      <go wp="p2"/>
-      <deroute block="stay_p1"/>
-    </block>
-    <block name="line_p1_p2">
-      <go from="p1" hmode="route" wp="p2"/>
-      <stay wp="p2" until="stage_time>10"/>
-      <go from="p2" hmode="route" wp="p1"/>
-      <deroute block="stay_p1"/>
-    </block>
-    <block name="route">
-      <go from="p1" hmode="route" wp="p3"/>
-      <go from="p3" hmode="route" wp="p4"/>
-      <go from="p4" hmode="route" wp="p1"/>
-      <deroute block="stay_p1"/>
-    </block>
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
     </block>

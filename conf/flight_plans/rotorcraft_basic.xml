@@ -15,6 +15,9 @@
     <waypoint name="CAM" x="-20" y="-50" height="2."/>
     <waypoint name="TD" x="5.6" y="-10.9"/>
   </waypoints>
+<exceptions>
+	<exception cond="electrical.bat_low && !(nav_block == IndexOfBlock('Setting_home_location')) && !(nav_block == IndexOfBlock('Holding_point') && !(nav_block == IndexOfBlock('Land')))" deroute="Land"/>
+</exceptions>
   <blocks>
     <block name="Wait GPS">
       <call fun="NavKillThrottle()"/>
