@@ -14,6 +14,7 @@
     <target name="nps" board="pc">
       <subsystem name="fdm" type="jsbsim"/>
       <subsystem name="radio_control" type="ppm"/>
+      <configure name="USE_MAGNETOMETER" value="0"/>
     </target>
 
 	<!-- Subsystem section -->
@@ -27,12 +28,6 @@
   </firmware>
 
   <modules main_freq="512">
-    <load name="send_imu_mag_current.xml"/>
-    <load name="follow.xml">
-      <define name="FOLLOW_AC_ID" value="101"/>
-      <define name="FOLLOW_WAYPOINT_ID" value="WP_p1"/>
-      <define name="FOLLOW_OFFSET_Z" value="2.0"/>
-    </load>
     <load name="waypointtest.xml"/>
   </modules>
 
@@ -99,14 +94,10 @@
   <!-- local magnetic field -->
   <!-- http://wiki.paparazziuav.org/wiki/Subsystem/ahrs#Local_Magnetic_Field -->
   <section name="AHRS" prefix="AHRS_">
-    <!-- Toulouse -->
-    <define name="H_X" value="0.513081"/>
-    <define name="H_Y" value="-0.00242783"/>
-    <define name="H_Z" value="0.858336"/>
     <!-- Delft -->
-    <!--define name="H_X" value="0.3892503"/>
+    <define name="H_X" value="0.3892503"/>
     <define name="H_Y" value="0.0017972"/>
-    <define name="H_Z" value="0.9211303"/ -->
+    <define name="H_Z" value="0.9211303"/>
 
     <!-- Use GPS heading instead of magneto -->
     <define name="USE_GPS_HEADING" value="1"/>
@@ -145,9 +136,9 @@
 
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
     <!-- setpoints -->
-    <define name="SP_MAX_PHI" value="3" unit="deg"/>
-    <define name="SP_MAX_THETA" value="3" unit="deg"/>
-    <define name="SP_MAX_R" value="200" unit="deg/s"/>
+    <define name="SP_MAX_PHI" value="15" unit="deg"/>
+    <define name="SP_MAX_THETA" value="15" unit="deg"/>
+    <define name="SP_MAX_R" value="50" unit="deg/s"/>
     <define name="DEADBAND_A" value="0"/>
     <define name="DEADBAND_E" value="0"/>
     <define name="DEADBAND_R" value="250"/>
@@ -197,7 +188,7 @@
 
   <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
     <!-- Good weather -->
-    <define name="MAX_BANK" value="3" unit="deg"/>
+    <define name="MAX_BANK" value="10" unit="deg"/>
     <!-- Bad weather -->
     <!-- define name="MAX_BANK" value="32" unit="deg"/ -->
 
