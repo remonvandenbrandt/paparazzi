@@ -1,5 +1,5 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
-<flight_plan alt="3" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="7" name="Waypoint move" security_height="1">
+<flight_plan alt="3" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="15" name="Waypoint move" security_height="1">
 <header>
  #include "autopilot.h"
  #include "generated/modules.h"
@@ -14,7 +14,7 @@
  <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
     <waypoint name="CLIMB" x="0.0" y="5.0"/>
-    <waypoint name="STDBY" x="-2.0" y="-5.0"/>
+    <waypoint name="STDBY" x="-1.0" y="-4.0"/>
     <waypoint name="TD" x="5.6" y="-10.9"/>
     <waypoint lat="51.990639" lon="4.376807" name="p1"/>
     <waypoint lat="51.990624" lon="4.376767" name="p2"/>
@@ -27,6 +27,10 @@
     <waypoint name="MYDYNAMIC" x="-1.0" y="-1.0"/>
     <waypoint name="MYTARGET" x="0" y="3.5"/>
   </waypoints>
+<!--<exceptions>
+	<exception cond="LessThan(15, NavTime())" deroute="land"/>-->
+	<!--  <exception cond="electrical.bat_low && !(nav_block == IndexOfBlock('Setting_home_location')) && !(nav_block == IndexOfBlock('Holding_point') && !(nav_block == IndexOfBlock('Land')))" deroute="Land"/>-->
+<!--</exceptions>-->
   <sectors>
     <sector color="red" name="Flight_Area">
       <corner name="FA1"/>
@@ -64,8 +68,7 @@
       <stay wp="STDBY"/>
     </block>
     <block name="challenge">
-	<!--<exception cond="LessThan(15, NavTime())" deroute="land"/>-->
-	<exception cond="mock_detectObstacle()" deroute="Avoidnow"/>
+	<exception cond="mock_detectObstacle(WP_MYDYNAMIC)" deroute="Avoidnow"/>
 	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
 	<stay wp="MYTARGET"/>
 	<!--deroute block="stayStandby"/-->
@@ -73,7 +76,6 @@
 <block name="Avoidnow">
 	<call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/>
 	  <go wp="MYDYNAMIC"/>
-
 	<deroute block="challenge"/>
 </block>
 <block name="stayStandby">
