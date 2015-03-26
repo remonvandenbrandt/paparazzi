@@ -1,20 +1,14 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
-<flight_plan alt="1" ground_alt="0" lat0="51.990634" lon0="4.376789" max_dist_from_home="15" name="Waypoint move" security_height="1">
-<header>
- #include "autopilot.h"
- #include "generated/modules.h"
 
-#include "modules/object_detection_opencv/object_detection.h"
-//Enable advanced electrical power functions
-    #include "subsystems/electrical.h"
-
-// Incluse airframe.h To be able to use specific variables
-    #include "generated/airframe.h"
+<flight_plan alt="150" ground_alt="147" lat0="51.990634" lon0="4.376789" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="2">
+  <header>
+#include "autopilot.h"
+#include "generated/modules.h"
 </header>
- <waypoints>
+  <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
-    <waypoint name="CLIMB" x="0.0" y="5.0"/>
-    <waypoint name="STDBY" x="-1.0" y="-4.0"/>
+    <waypoint name="CLIMB" x="-0.8" y="1.7"/>
+    <waypoint name="STDBY" x="-2.0" y="-5.0"/>
     <waypoint name="TD" x="5.6" y="-10.9"/>
     <waypoint lat="51.990639" lon="4.376807" name="p1"/>
     <waypoint lat="51.990624" lon="4.376767" name="p2"/>
@@ -24,15 +18,12 @@
     <waypoint lat="51.990606" lon="4.376760" name="FA2"/>
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
     <waypoint lat="51.990681" lon="4.376791" name="FA4"/>
-    <waypoint name="MYDYNAMIC" x="-1.0" y="-1.0"/>
-    <waypoint name="MYTARGET" x="0" y="3.5"/>
+    <waypoint lat="51.990636" lon="4.376826" name="FA1_margin"/>
+    <waypoint lat="51.990613" lon="4.376763" name="FA2_margin"/>
+    <waypoint lat="51.990651" lon="4.376724" name="FA3_margin"/>
+    <waypoint lat="51.990674" lon="4.376788" name="FA4_margin"/>
     <waypoint lat="51.990645" lon="4.376776" name="center"/>
-    <waypoint lat="51.9906344" lon="4.3767525" name="CVTEST"/>
   </waypoints>
-<!--<exceptions>
-	<exception cond="LessThan(15, NavTime())" deroute="land"/>-->
-	<!--  <exception cond="electrical.bat_low && !(nav_block == IndexOfBlock('Setting_home_location')) && !(nav_block == IndexOfBlock('Holding_point') && !(nav_block == IndexOfBlock('Land')))" deroute="Land"/>-->
-<!--</exceptions>-->
   <sectors>
     <sector color="red" name="Flight_Area">
       <corner name="FA1"/>
@@ -40,12 +31,12 @@
       <corner name="FA3"/>
       <corner name="FA4"/>
     </sector>
-    <!--sector color="orange" name="Bound_Box">
+    <sector color="orange" name="Bound_Box">
       <corner name="FA1_margin"/>
       <corner name="FA2_margin"/>
       <corner name="FA3_margin"/>
       <corner name="FA4_margin"/>
-    </sector-->
+    </sector>
   </sectors>
   <blocks>
     <block name="Wait GPS">
@@ -62,45 +53,39 @@
     </block>
     <block name="Holding point">
       <call fun="NavKillThrottle()"/>
-      <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
     <block name="Start Engine">
       <call fun="NavResurrect()"/>
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
       <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
-      <stay vmode="climb" climb="0.5" wp="CLIMB"/>
+      <stay climb="0.5" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
- <block name="cvtest">
-	<exception cond="! InsideFlight_Area(GetPosX(), GetPosY())" deroute="gotoCENTER"/>
-	<exception cond="getObstacle()->w > 250" deroute="Avoidnow"/>
-	<call fun="nav_set_heading_towards_waypoint(WP_CVTEST)"/>
-	<stay wp="CVTEST"/>
+    <block name="avoid obstacles">
+		<exception cond="! InsideBound_Box(GetPosX(), GetPosY())" deroute="turnAround"/>
+		<attitude pitch="1" roll="0" alt="149"/>
+      <!--<exception cond="getObstacle()->w > 150" deroute="avoid"/>-->
     </block>
-    <block name="challenge">
-	<exception cond="! InsideFlight_Area(GetPosX(), GetPosY())" deroute="gotoCENTER"/>
-	<exception cond="getObstacle()->h > 200" deroute="Avoidnow"/>
-	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
-	<stay wp="MYTARGET"/>
-	<!--deroute block="stayStandby"/-->
+    <!--block name="avoid">
+      <exception cond="getObstacle()->x > 640" deroute="turnLeft"/>
+      <exception cond="640 > getObstacle()->x " deroute="turnRight"/>
+    </block-->
+    <block name="turnLeft"/>
+    <block name="turnRight"/>
+
+    <block name="turnAround">
+		<call fun="NavSetWaypointHere(WP_STDBY)"/>
+		<stay wp="STDBY"/>
+      <!--<call fun="nav_set_heading_deg(nav_heading+90)"/>-->
+      <return/>
     </block>
-<block name="Avoidnow">
-	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
-	  <go wp="MYTARGET"/>
-	<deroute block="cvtest"/>
-</block>
-	<block name="gotoCENTER">
-          <call fun="nav_set_heading_towards_waypoint(WP_center)"/>
-	  <go wp="center"/>	
-	  <stay wp="center"/>
-    </block>
-<block name="stayStandby">
-	<stay wp="MYTARGET"/>
-</block>
+
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
     </block>
@@ -108,13 +93,13 @@
       <go wp="TD"/>
     </block>
     <block name="flare">
-      <exception cond="NavDetectGround()" deroute="Standby"/>
+      <exception cond="NavDetectGround()" deroute="Holding point"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
       <stay climb="-0.8" vmode="climb" wp="TD"/>
     </block>
     <block name="landed">
-      <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
+      <attitude pitch="0" roll="0" throttle="0" until="FALSE" vmode="throttle"/>
     </block>
   </blocks>
 </flight_plan>

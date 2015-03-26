@@ -43,30 +43,31 @@ return 0;
 }
 
 
-bool_t mock_detectObstacle(uint8_t wp_id){
-   int i, n;
-   struct Int32Eulers Angles;
+bool_t generateWaypoint(uint8_t wp_id){
+   //int i, n;
+   //struct Int32Eulers Angles;
    struct EnuCoor_i waypoint;
    time_t t;
    t = time(&t);
-   waypoint = *stateGetPositionEnu_i();
-   Angles = *stateGetNedToBodyEulers_i();
+   //waypoint = *stateGetPositionEnu_i();
+   //Angles = *stateGetNedToBodyEulers_i();
    
    /* Intializes random number generator */
-   //srand((unsigned) t);
-   if(t % 10 == 0){
+   srand((unsigned) t);
+   waypoint.x = rand() %7;
+   waypoint.y = rand() %7;
+   nav_move_waypoint(wp_id, &waypoint);
+   /*if(t % 10 == 0){
  	i=1; //Generates 1 or 0
 
-	waypoint.x=waypoint.x-265*cos(Angles.phi)+265*sin(Angles.phi);
+	waypoint.x=waypoint.x+265*cos(Angles.phi)+265*sin(Angles.phi);
 	waypoint.y=waypoint.y-265*sin(Angles.phi)+265*cos(Angles.phi);
 
 	nav_move_waypoint(wp_id, &waypoint);
    } else {
    	i=0;
-   }
-   printf("DEBUG i: %d\n",i);
-   printf("DEBUG t: %d\n",t);
-   return i;
+   }*/
+   return 0;
 }
 
 /*int detectObstacle(void) {

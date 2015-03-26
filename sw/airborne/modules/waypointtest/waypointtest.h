@@ -9,7 +9,7 @@ void waypointtest_periodic(void);
 
 int moveWaypoint_HD(uint8_t wp_id);
 
-bool_t mock_detectObstacle(uint8_t wp_id);
+bool_t generateWaypoint(uint8_t wp_id);
 
 //int detectObstacle(void);
 
