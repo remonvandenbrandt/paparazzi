@@ -2,7 +2,7 @@
 #include "firmwares/rotorcraft/navigation.h"
 #include "state.h"
 #include "waypointtest.h"
-#include "generated/flight_plan.h"
+//#include "generated/flight_plan.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -76,6 +76,18 @@ int generateRandomWaypoint(wp_id){
    return 0;
 }
 
+int createRandWP(void) {
+	uint8_t wp;
+   time_t t;
+   t = time(&t);
+   srand((unsigned) t);
+
+	wp = rand() %15;
+return 0;
+}
+uint8_t getRandWP(void) {
+	return wp+1;
+}
 /*int detectObstacle(void) {
 	nav_set_heading_towards_waypoint(WP_GlobalWP);
 	return 0;
