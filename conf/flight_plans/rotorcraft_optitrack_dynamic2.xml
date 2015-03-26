@@ -25,6 +25,7 @@
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
     <waypoint lat="51.990681" lon="4.376791" name="FA4"/>
     <waypoint name="MYDYNAMIC" x="-1.0" y="-1.0"/>
+	<waypoint name="here" x="0" y="0"/>
     <waypoint name="MYTARGET" x="0" y="3.5"/>
     <waypoint lat="51.990645" lon="4.376776" name="center"/>
     <waypoint lat="51.9906344" lon="4.3767525" name="CVTEST"/>
@@ -68,30 +69,42 @@
       <call fun="NavResurrect()"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
-      <exception cond="stateGetPositionEnu_f()->z > 2.0" deroute="Standby"/>
+      <exception cond="stateGetPositionEnu_f()->z > 1.0" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
       <stay vmode="climb" climb="0.5" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
+<block name="startobject">
+	<call fun="nav_set_heading_towards_waypoint(WP_p1)"/>
+	<call fun="NavSetWaypointHere(WP_here)"/>
+	<go from="here" wp="p1" hmode="route"/>
+	<deroute block="cvtest"/>
+    </block>
  <block name="cvtest">
 	<exception cond="! InsideFlight_Area(GetPosX(), GetPosY())" deroute="gotoCENTER"/>
 	<exception cond="getObstacle()->w > 250" deroute="Avoidnow"/>
-	<call fun="nav_set_heading_towards_waypoint(WP_CVTEST)"/>
-	<stay wp="CVTEST"/>
-    </block>
-    <block name="challenge">
-	<exception cond="! InsideFlight_Area(GetPosX(), GetPosY())" deroute="gotoCENTER"/>
-	<exception cond="getObstacle()->h > 200" deroute="Avoidnow"/>
-	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
-	<stay wp="MYTARGET"/>
-	<!--deroute block="stayStandby"/-->
+<!--	<call fun="generateRandomWaypoint(WP_MYDYNAMIC)"/>-->
+	<!--<call fun="NavSetWaypointHere(WP_here)"/>
+	<call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/>
+	<go from="here" wp="MYDYNAMIC" hmode="route"/>
+
+	<deroute block="cvtest"/>
+	<stay wp="p1"/>-->
+	<call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/>
+	<go wp="MYDYNAMIC"/>
+	<call fun="NavSetWaypointHere(WP_here)"/>
+	<stay wp="here"/>
     </block>
 <block name="Avoidnow">
-	<call fun="nav_set_heading_towards_waypoint(WP_MYTARGET)"/>
-	  <go wp="MYTARGET"/>
-	<deroute block="cvtest"/>
+	<call fun="generateRandomWaypoint(WP_MYDYNAMIC)"/>
+	<!--call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/-->
+        <!--call fun="NavSetWaypointHere(WP_here)"/>
+	<call fun="nav_set_heading_towards_waypoint(WP_MYDYNAMIC)"/>
+	<go from="here" wp="MYDYNAMIC" hmode="route"/> 
+	<deroute block="cvtest"/> -->
+	<stay wp="here"/>
 </block>
 	<block name="gotoCENTER">
           <call fun="nav_set_heading_towards_waypoint(WP_center)"/>

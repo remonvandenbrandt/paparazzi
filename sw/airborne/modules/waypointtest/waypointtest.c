@@ -1,6 +1,7 @@
 #include "math/pprz_geodetic_int.h"
 #include "firmwares/rotorcraft/navigation.h"
 #include "state.h"
+#include "waypointtest.h"
 #include "generated/flight_plan.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,35 +37,40 @@ void waypointtest_periodic(void)
   	}*/
 }
 
-int moveWaypoint_HD(uint8_t wp_id) {
+int moveWaypoint_HD(wp_id) {
 	printf("Waypoint nr: %i", wp_id);
 	nav_set_heading_towards_waypoint(wp_id);
 return 0;
 }
 
 
-bool_t generateWaypoint(uint8_t wp_id){
+int generateRandomWaypoint(wp_id){
    //int i, n;
-   //struct Int32Eulers Angles;
+   struct Int32Eulers Angles;
    struct EnuCoor_i waypoint;
    time_t t;
    t = time(&t);
-   //waypoint = *stateGetPositionEnu_i();
-   //Angles = *stateGetNedToBodyEulers_i();
-   
-   /* Intializes random number generator */
    srand((unsigned) t);
-   waypoint.x = rand() %7;
+   /*waypoint.x = rand() %7;
    waypoint.y = rand() %7;
-   nav_move_waypoint(wp_id, &waypoint);
+   waypoint.x=waypoint.x*10;
+   waypoint.y=waypoint.y*10;
+   nav_move_waypoint(wp_id, &waypoint);*/
+   printf("DEBG x: %d \n y: %d \n",waypoint.x, waypoint.y);
+   printf("Time: %d \n", t);
+   waypoint = *stateGetPositionEnu_i();
+   Angles = *stateGetNedToBodyEulers_i();
+   printf("Debug message: Entered the function");
+   //Intializes random number generator
+   
    /*if(t % 10 == 0){
- 	i=1; //Generates 1 or 0
+ 	i=1; //Generates 1 or 0 */
 
-	waypoint.x=waypoint.x+265*cos(Angles.phi)+265*sin(Angles.phi);
-	waypoint.y=waypoint.y-265*sin(Angles.phi)+265*cos(Angles.phi);
+	waypoint.x=waypoint.x+900*cos(Angles.phi)+900*sin(Angles.phi);
+	//waypoint.y=waypoint.y-265*sin(Angles.phi)+265*cos(Angles.phi);
 
 	nav_move_waypoint(wp_id, &waypoint);
-   } else {
+   /*} else {
    	i=0;
    }*/
    return 0;

@@ -1,5 +1,5 @@
 #include "firmwares/rotorcraft/navigation.h"
-#include "generated/flight_plan.h"
+//#include "generated/flight_plan.h"
 #include "math/pprz_geodetic_int.h"
 #include "state.h"
 
@@ -7,9 +7,9 @@ void waypointtest_init(void);
 
 void waypointtest_periodic(void);
 
-int moveWaypoint_HD(uint8_t wp_id);
+int moveWaypoint_HD(int);
 
-bool_t generateWaypoint(uint8_t wp_id);
+int generateRandomWaypoint(int);
 
 //int detectObstacle(void);
 
