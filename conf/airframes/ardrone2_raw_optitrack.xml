@@ -28,7 +28,7 @@
   </firmware>
 
   <modules main_freq="512">
-    <load name="waypointtest.xml"/>
+    <!--load name="waypointtest.xml"/-->
 	<load name="object_detection_opencv.xml"/>
   </modules>
 
@@ -189,15 +189,15 @@
 
   <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
     <!-- Good weather -->
-    <define name="MAX_BANK" value="3" unit="deg"/>
+    <define name="MAX_BANK" value="2" unit="deg"/>
     <!-- Bad weather -->
     <!-- define name="MAX_BANK" value="32" unit="deg"/ -->
 
     <!-- reference model -->
     <define name="REF_OMEGA" value="RadOfDeg(67.)"/>
     <define name="REF_ZETA" value="0.85"/>
-    <define name="REF_MAX_ACCEL" value="5.66"/>
-    <define name="REF_MAX_SPEED" value="3"/>
+    <define name="REF_MAX_ACCEL" value="1"/>
+    <define name="REF_MAX_SPEED" value="1"/>
 
     <!-- gains -->
     <define name="PGAIN" value="116"/>

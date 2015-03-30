@@ -27,7 +27,8 @@
 #define OBJECT_DETECTION_MODULE_H
 
 #include "std.h"
-
+#include <time.h>
+#include <stdlib.h>
 // Module functions
 void object_detection_init(void);
 void object_detection_start(void);
@@ -37,6 +38,10 @@ void object_detection_run(void);
 struct obstacleStruct{
     int x, y, h, w;
 };
+
+int wayp;
+extern int createRandWP(void);
+extern int getRandWP(void);
 
 struct obstacleStruct obstacle;
 extern struct obstacleStruct *getObstacle(void);

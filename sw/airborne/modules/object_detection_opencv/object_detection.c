@@ -138,8 +138,10 @@ static void *object_detection_thread(void *data __attribute__((unused))) {
 	writeIsLocked = false;
 
 	//printf("x-%d y-%d h-%d w-%d\n",big.x,big.y,big.height,big.width);
+	//wayp = rand() % 3 + 1;
+	//printf("random number %d",wayp);
 	
-	printf("x-%d y-%d h-%d w-%d\n",getObstacle()->x,getObstacle()->y,getObstacle()->h,getObstacle()->w);
+	//printf("x-%d y-%d h-%d w-%d\n",getObstacle()->x,getObstacle()->y,getObstacle()->h,getObstacle()->w);
 	//cvRectangle( channel0, cvPoint( big.x, big.y ), cvPoint( big.x + big.width, big.y + big.height),colors,1,CV_AA,0);
 	//cvSaveImage("out.jpg", channel0, 0);
 
@@ -158,6 +160,12 @@ void object_detection_init(void) {
 
 	channel0 = cvCreateImage(cvSize(1280, 720), IPL_DEPTH_8U, 1);
 	threshold = cvCreateImage(cvSize(1280, 720), IPL_DEPTH_8U, 1);
+
+	time_t t;
+	//srand(time(NULL));
+  // t = time(&t);
+        srand((unsigned) time(&t));
+	wayp = rand() % 8 + 1;
 
 	// Initialize the V4L2 device
 	dev = v4l2_init(OBJECT_DETECTION_DEVICE, OBJECT_DETECTION_DEVICE_SIZE, OBJECT_DETECTION_DEVICE_BUFFERS);
@@ -187,6 +195,21 @@ void object_detection_stop(void) {
 void object_detection_run(void) {
 }
 
+int createRandWP(void) {
+	//uint8_t wp;
+	//int prev;
+	//prev = wayp;
+	//while(prev == wayp) {
+		wayp = rand() % 8 + 1;
+	//}
+
+	//wayp = 3;
+	//printf("random number %d\n",wayp);
+	return 0;
+}
+int getRandWP(void) {
+	return wayp;
+}
 // Interface between vision code and flightplan
 //int *getObjectLoc(void) {
 //if (writeIsLocked == false) {

@@ -2,14 +2,17 @@
 //#include "generated/flight_plan.h"
 #include "math/pprz_geodetic_int.h"
 #include "state.h"
-uint8_t wp;
+#include <time.h>
+#include <stdlib.h>
+uint8_t wayp;
+
 void waypointtest_init(void);
 
-void waypointtest_periodic(void);
+/*void waypointtest_periodic(void);
 
 int moveWaypoint_HD(int);
 
-int generateRandomWaypoint(int);
+int generateRandomWaypoint(int);*/
 
 extern int createRandWP(void);
 
